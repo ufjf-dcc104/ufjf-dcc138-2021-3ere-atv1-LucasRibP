@@ -13,7 +13,8 @@
     <script>
       let canvas = document.querySelector("canvas");
       let ctx = canvas.getContext("2d");
-      let x = 100;
+      let x = 150;
+      let y = 100;
       let t0;
       let dt;
       canvas.width = 480;
@@ -28,12 +29,13 @@
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Atualiza estado
+        // Atualiza estados
         x = x + 10 * dt;
+        y = 100 + 1500 * Math.cos(t / 200) * dt;
 
         // Desenha elementos
         ctx.fillStyle = "white";
-        ctx.fillRect(x, 150, 20, 20);
+        ctx.fillRect(x, y, 20, 20);
 
         t0 = t;
 
