@@ -15,6 +15,7 @@
       let ctx = canvas.getContext("2d");
       let x = 150;
       let y = 100;
+      let a = 0;
       let t0;
       let dt;
       canvas.width = 480;
@@ -31,7 +32,8 @@
 
         // Atualiza estados
         x = x + 10 * dt;
-        y = 100 + 1500 * Math.cos(t / 200) * dt;
+        a = a + 2 * Math.PI * dt;
+        y = 100 + 100 * Math.cos(a);
 
         // Desenha elementos
         ctx.fillStyle = "white";
