@@ -16,6 +16,8 @@
       let x = 150;
       let y = 100;
       let a = 0;
+      let squareHeight = 20;
+      let squareWidth = 20;
       let t0;
       let dt;
       canvas.width = 480;
@@ -31,13 +33,17 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Atualiza estados
-        x = x + 10 * dt;
         a = a + 2 * Math.PI * dt;
-        y = 100 + 100 * Math.cos(a);
+        x =
+          (canvas.width - squareWidth) / 2 +
+          ((canvas.width - squareWidth) / 2) * Math.sin(a);
+        y =
+          (canvas.height - squareHeight) / 2 +
+          ((canvas.height - squareHeight) / 2) * Math.cos(a);
 
         // Desenha elementos
         ctx.fillStyle = "white";
-        ctx.fillRect(x, y, 20, 20);
+        ctx.fillRect(x, y, squareWidth, squareHeight);
 
         t0 = t;
 
