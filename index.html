@@ -13,12 +13,21 @@
     <script>
       let canvas = document.querySelector("canvas");
       let ctx = canvas.getContext("2d");
+
       let x = 150;
       let vx = 0;
       let ax = 0;
       let y = 100;
       let vy = 0;
       let ay = 0;
+
+      let ex = 300;
+      let evx = 0;
+      let eax = 0;
+      let ey = 200;
+      let evy = 0;
+      let eay = 0;
+
       const K = 180;
       let squareHeight = 20;
       let squareWidth = 20;
@@ -36,15 +45,27 @@
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // Controladores
+        eax = 0.5 * (x - ex) - 0.2 * evx;
+        eay = 0.5 * (y - ey) - 0.2 * evy;
+
         // Atualiza dinamica dos estados
         x = x + vx * dt;
         vx += ax * dt;
         y = y + vy * dt;
         vy += ay * dt;
 
+        ex = ex + evx * dt;
+        evx += eax * dt;
+        ey = ey + evy * dt;
+        evy += eay * dt;
+
         // Desenha elementos
         ctx.fillStyle = "white";
         ctx.fillRect(x, y, squareWidth, squareHeight);
+
+        ctx.fillStyle = "red";
+        ctx.fillRect(ex, ey, squareWidth, squareHeight);
 
         t0 = t;
 
