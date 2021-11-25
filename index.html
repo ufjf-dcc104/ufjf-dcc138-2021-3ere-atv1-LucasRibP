@@ -14,6 +14,15 @@
       let canvas = document.querySelector("canvas");
       let ctx = canvas.getContext("2d");
 
+      const K = 180;
+      let squareHeight = 20;
+      let squareWidth = 20;
+      let t0;
+      let dt;
+      canvas.width = 480;
+      canvas.height = 320;
+      requestAnimationFrame(desenha);
+
       const p = {
         ay: 0,
         x: 150,
@@ -21,10 +30,9 @@
         ax: 0,
         y: 100,
         vy: 0,
-        desenhar: () => {
-          ctx.fillStyle = "white";
-          ctx.fillRect(this.x, this.y, squareWidth, squareHeight);
-        },
+        cor: "white",
+        desenhar: desenhaElemento,
+        mover: moverElemento,
       };
 
       const e = {
@@ -34,21 +42,10 @@
         y: 200,
         vy: 0,
         ay: 0,
-        desenhar = () => {
-
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.x, this.y, squareWidth, squareHeight);
-        }
+        cor: "red",
+        desenhar: desenhaElemento,
+        mover: moverElemento,
       };
-
-      const K = 180;
-      let squareHeight = 20;
-      let squareWidth = 20;
-      let t0;
-      let dt;
-      canvas.width = 480;
-      canvas.height = 320;
-      requestAnimationFrame(desenha);
 
       function desenha(t) {
         t0 = t0 ?? t;
@@ -63,22 +60,27 @@
         e.ay = 0.5 * (p.y - e.y) - 0.2 * e.vy;
 
         // Atualiza dinamica dos estados
-        p.x += p.vx * dt;
-        p.vx += p.ax * dt;
-        p.y += p.vy * dt;
-        p.vy += p.ay * dt;
-
-        e.x += e.vx * dt;
-        e.vx += e.ax * dt;
-        e.y += e.vy * dt;
-        e.vy += e.ay * dt;
+        p.mover();
+        e.mover();
 
         // Desenha elementos
-        p.desenhar()
-        e.desenhar()
+        p.desenhar();
+        e.desenhar();
 
         t0 = t;
         requestAnimationFrame(desenha);
+      }
+
+      function moverElemento() {
+        this.x += this.vx * dt;
+        this.vx += this.ax * dt;
+        this.y += this.vy * dt;
+        this.vy += this.ay * dt;
+      }
+
+      function desenhaElemento() {
+        ctx.fillStyle = this.cor;
+        ctx.fillRect(this.x, this.y, squareWidth, squareHeight);
       }
 
       addEventListener("keydown", teclaPressionada);
