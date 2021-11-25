@@ -15,9 +15,11 @@
       let ctx = canvas.getContext("2d");
       let x = 150;
       let vx = 0;
+      let ax = 0;
       let y = 100;
       let vy = 0;
-      const V = 180;
+      let ay = 0;
+      const K = 180;
       let squareHeight = 20;
       let squareWidth = 20;
       let t0;
@@ -36,7 +38,9 @@
 
         // Atualiza dinamica dos estados
         x = x + vx * dt;
+        vx += ax * dt;
         y = y + vy * dt;
+        vy += ay * dt;
 
         // Desenha elementos
         ctx.fillStyle = "white";
@@ -54,16 +58,16 @@
         // Adiciona controle de velocidades
         switch (key) {
           case "ArrowUp":
-            vy = -V;
+            ay = -K;
             break;
           case "ArrowDown":
-            vy = +V;
+            ay = +K;
             break;
           case "ArrowLeft":
-            vx = -V;
+            ax = -K;
             break;
           case "ArrowRight":
-            vx = +V;
+            ax = +K;
             break;
         }
       }
@@ -72,15 +76,19 @@
         // Adiciona controle de velocidades
         switch (key) {
           case "ArrowUp":
+            ay = 0;
             vy = 0;
             break;
           case "ArrowDown":
+            ay = 0;
             vy = 0;
             break;
           case "ArrowLeft":
+            ax = 0;
             vx = 0;
             break;
           case "ArrowRight":
+            ax = 0;
             vx = 0;
             break;
         }
