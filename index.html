@@ -21,7 +21,7 @@
       let dt;
       canvas.width = 480;
       canvas.height = 320;
-      requestAnimationFrame(desenha);
+      let pontos = 0;
 
       const p = {
         ay: 0,
@@ -85,12 +85,43 @@
         p.mover();
         p.desenhar();
 
-        // Controladores
-        sprites.forEach((e) => e.controlar?.(p));
-        // Atualiza dinamica dos estados
-        sprites.forEach((e) => e.mover());
-        // Desenha elementos
-        sprites.forEach((e) => e.desenhar());
+        sprites.forEach((e) => {
+          // Controladores
+          e.controlar?.(p);
+          // Atualiza dinamica dos estados
+          e.mover();
+          // Desenha elementos
+          e.desenhar();
+
+          if (e != o && colidiram(o, e)) {
+            o.x = -1000;
+            o.y = -1000;
+            o.vx = 0;
+            o.ax = 0;
+            e.x = 1000;
+            e.vx = 100;
+            pontos++;
+          }
+
+          if (e != o && colidiram(p, e)) {
+            e.x = 1000;
+            e.vx = 100;
+            pontos -= 3;
+          }
+        });
+
+        ctx.fillStyle = "yellow";
+        ctx.font = "20px Impact";
+        ctx.fillText(pontos, 10, 30);
+
+        function colidiram(A, B) {
+          return !(
+            A.x > B.x + 20 ||
+            A.x + 20 < B.x ||
+            A.y > B.y + 20 ||
+            A.y + 20 < B.y
+          );
+        }
 
         t0 = t;
         requestAnimationFrame(desenha);
@@ -164,6 +195,7 @@
             break;
         }
       }
+      requestAnimationFrame(desenha);
     </script>
   </body>
 </html>
