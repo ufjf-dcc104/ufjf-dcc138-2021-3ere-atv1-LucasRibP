@@ -35,11 +35,30 @@
         mover: moverElemento,
       };
 
+      const o = {
+        ay: 0,
+        x: -1000,
+        vx: 0,
+        ax: 0,
+        y: 150,
+        vy: 0,
+        cor: "blue",
+        desenhar: desenhaElemento,
+        mover: moverElemento,
+        controlar() {
+          if (this.x > canvas.width + 60) {
+            this.x = -1000;
+            this.ax = 0;
+            this.vx = 0;
+          }
+        },
+      };
+
       const sprites = [];
       const ne = 20;
       for (let i = 0; i < ne; i++) {
         const e = {
-          x: canvas.width * Math.random(),
+          x: canvas.width * (1 + 10 * Math.random()),
           vx: 0,
           ax: 0,
           y: canvas.height * Math.random(),
@@ -52,6 +71,7 @@
         };
         sprites.push(e);
       }
+      sprites.push(o);
 
       function desenha(t) {
         t0 = t0 ?? t;
@@ -66,7 +86,7 @@
         p.desenhar();
 
         // Controladores
-        sprites.forEach((e) => e.controlar(p));
+        sprites.forEach((e) => e.controlar?.(p));
         // Atualiza dinamica dos estados
         sprites.forEach((e) => e.mover());
         // Desenha elementos
@@ -89,8 +109,8 @@
       }
 
       function perseguirAlvo(alvo) {
-        this.ax = 0.5 * (alvo.x - this.x) - 0.2 * this.vx;
-        this.ay = 0.5 * (alvo.y - this.y) - 0.2 * this.vy;
+        this.ax = 100 * Math.sign(alvo.x - this.x) - 0.2 * this.vx;
+        this.ay = 100 * Math.sign(alvo.y - this.y) - 0.2 * this.vy;
       }
 
       function evitarAlvo(alvo) {
@@ -115,6 +135,14 @@
             break;
           case "ArrowRight":
             p.ax = +K;
+            break;
+          case " ":
+            if (o.x === -1000) {
+              o.x = p.x;
+              o.y = p.y;
+              o.vx = 0;
+              o.ax = 200;
+            }
             break;
         }
       }
